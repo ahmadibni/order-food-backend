@@ -32,3 +32,31 @@ export const getFoodById = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const createFood = async (req: Request, res: Response) => {
+  try {
+    const { name, price, description, image, category } = req.body;
+
+    const food = new Food({
+      name,
+      price,
+      description,
+      image,
+      category,
+    });
+
+    await food.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Food created successfully",
+      data: food,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};

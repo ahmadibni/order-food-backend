@@ -4,11 +4,16 @@ import { FoodInput } from "../types/food";
 
 export const getAllFoods = async (req: Request, res: Response) => {
   try {
-    const data = await Food.find().select("name price category image");
+    const foods = await Food.find().select("name price category image");
+    const data = foods.map((food) => ({
+      ...food.toObject(),
+      image: `${req.protocol}://${req.get("host")}/${food.image}`,
+    }));
+
     res.status(200).json({
       success: true,
       message: "Foods fetched successfully",
-      data: data,
+      data,
     });
   } catch (error) {
     res.status(500).json({

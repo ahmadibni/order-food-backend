@@ -8,6 +8,7 @@ const app = express();
 
 connect();
 
+app.use(express.static("files"));
 app.use(bodyParser.json());
 app.use("/api", router);
 

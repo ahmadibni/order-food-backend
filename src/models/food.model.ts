@@ -1,13 +1,5 @@
 import mongoose from "mongoose";
-
-interface Food {
-  name: string;
-  price: number;
-  description: string;
-  image: string;
-  category: string;
-  isAvailable: boolean;
-}
+import { Food } from "../types/food";
 
 const schema = mongoose.Schema;
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Food from "../models/food.model";
-import { FoodInput } from "../types/food";
+import { FoodInput } from "../types/food.types";
 
 export const getAllFoods = async (req: Request, res: Response) => {
   try {

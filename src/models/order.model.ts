@@ -1,9 +1,30 @@
 import mongoose from "mongoose";
-import { Order } from "../types/order.types";
+import { Order, OrderItem } from "../types/order.types";
 
 const schema = mongoose.Schema;
 
-const orderSchema = new schema<Order>(
+const OrderItemSchema = new schema<OrderItem>(
+  {
+    foodId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Food",
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+
+const OrderSchema = new schema<Order>(
   {
     name: {
       type: String,
@@ -17,23 +38,10 @@ const orderSchema = new schema<Order>(
       type: String,
       required: true,
     },
-    items: [
-      {
-        foodId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Food",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: true,
-        },
-      },
-    ],
+    items: {
+      type: [OrderItemSchema],
+      required: true,
+    },
     totalPrice: {
       type: Number,
       required: true,
@@ -49,6 +57,6 @@ const orderSchema = new schema<Order>(
   }
 );
 
-const Order = mongoose.model<Order>("Order", orderSchema);
+const Order = mongoose.model<Order>("Order", OrderSchema);
 
 export default Order;

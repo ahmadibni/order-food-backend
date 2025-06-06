@@ -3,7 +3,7 @@ import { Food } from "../types/food.types";
 
 const schema = mongoose.Schema;
 
-const foodSchema = new schema<Food>(
+const FoodSchema = new schema<Food>(
   {
     name: {
       type: String,
@@ -35,6 +35,6 @@ const foodSchema = new schema<Food>(
   }
 );
 
-const Food = mongoose.model<Food>("Food", foodSchema);
+const Food = mongoose.model<Food>("Food", FoodSchema);
 
 export default Food;

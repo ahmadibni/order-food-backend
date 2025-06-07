@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import Order from "../models/order.model";
+import { OrderItem, OrderRequest } from "../types/order.types";
+import Food from "../models/food.model";
 
 export const getOrders = async (req: Request, res: Response) => {
   try {
@@ -17,25 +19,55 @@ export const getOrders = async (req: Request, res: Response) => {
   }
 };
 
-export const createOrder = async (req: Request, res: Response) => {
+export const createOrder = async (
+  req: Request<{}, {}, OrderRequest>,
+  res: Response
+) => {
   try {
-    const { name, phone, address, items, totalPrice, status } = req.body;
+    const { name, phone, address, items } = req.body;
+
+    const orderItems: OrderItem[] = [];
+    let totalPrice = 0;
+
+    for (const item of items) {
+      const food = await Food.findById(item.foodId);
+
+      if (!food) {
+        res.status(404).json({
+          success: false,
+          message: "Food not found",
+        });
+        return;
+      }
+
+      const price = food.price;
+      totalPrice += price * item.quantity;
+
+      const orderItem: OrderItem = {
+        foodId: item.foodId,
+        name: food.name,
+        quantity: item.quantity,
+        price,
+      };
+
+      orderItems.push(orderItem);
+    }
 
     const order = new Order({
       name,
       phone,
       address,
-      items,
+      items: orderItems,
       totalPrice,
-      status,
     });
 
     const result = await order.save();
 
     res.status(201).json({
-      status: true,
-      message: "Order created successfully",
-      data: result
+      success: true,
+      message:
+        "Your order has been placed successfully. We're preparing it now!",
+      data: result,
     });
   } catch (error) {
     res.status(500).json({

@@ -26,11 +26,16 @@ export const getFoods = async (req: Request, res: Response) => {
 export const getFoodById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await Food.findById(id);
+    const food = await Food.findById(id);
+
+    const data = {
+      ...food?.toObject(),
+      image: `${req.protocol}://${req.get("host")}/${food?.image}`,
+    }
     res.status(200).json({
       success: true,
       message: "Foods fetched successfully",
-      data: data,
+      data,
     });
   } catch (error) {
     res.status(500).json({

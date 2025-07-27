@@ -26,6 +26,14 @@ export const createOrder = async (
   try {
     const { name, phone, address, items } = req.body;
 
+    if (!name || !phone || !address || !items || items.length === 0) {
+      res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+      return;
+    }
+
     const orderItems: OrderItem[] = [];
     let totalPrice = 0;
 

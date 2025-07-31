@@ -5,7 +5,12 @@ import {
   getFoodById,
   getFoods,
 } from "../controllers/food.controller";
-import { createOrder, getOrders } from "../controllers/order.controller";
+import {
+  createOrder,
+  getOrderById,
+  getOrders,
+  updateStatusOrder,
+} from "../controllers/order.controller";
 
 const router = express.Router();
 
@@ -17,6 +22,8 @@ router.post("/foods/many", createManyFoods);
 
 // Order Routes
 router.get("/orders", getOrders);
+router.get("/orders/:id", getOrderById);
+router.put("/orders/:id/status", updateStatusOrder);
 router.post("/orders", createOrder);
 
 export default router;

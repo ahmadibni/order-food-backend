@@ -7,13 +7,21 @@ export interface OrderItem {
   quantity: number;
 }
 
+export const ORDER_STATUS = [
+  "pending",
+  "preparing",
+  "delivered",
+  "cancelled",
+] as const;
+export type OrderStatus = (typeof ORDER_STATUS)[number];
+
 export interface Order {
   name: string;
   phone: string;
   address: string;
   items: OrderItem[];
   totalPrice: number;
-  status: "pending" | "preparing" | "delivered" | "cancelled";
+  status: OrderStatus;
 }
 
 export interface OrderItemRequest {
